@@ -58,7 +58,7 @@ const getCategoryIcon = (cat: string) => {
         </aside>
 
         <!-- Liste des Ressources HTML en SSG -->
-        <section class="resources-list" id="resources-container">
+       <section class="resources-list" id="resources-container">
             {allResources.map((res) => (
                 <article 
                     class="resource-card glass-card fade-in"
@@ -86,16 +86,12 @@ const getCategoryIcon = (cat: string) => {
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 
                                 Temps: {res.time}
                             </span>
-                            <span class="meta-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> 
-                                Niveau: {res.level}
-                            </span>
                             <span class="meta-item source">Source: <strong>{res.source}</strong></span>
                         </div>
                     </div>
                     <div class="resource-footer">
                         <a href={res.url} target="_blank" rel="noopener noreferrer" class="primary-btn sm">
-                            Consulter le tutoriel source <span class="arrow">↗</span>
+                            Consulter <span class="arrow">↗</span>
                         </a>
                     </div>
                 </article>
@@ -103,6 +99,36 @@ const getCategoryIcon = (cat: string) => {
             
             <div id="no-results-msg" class="glass-card fade-in" style="display: none; grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">
                 <p>Aucune ressource trouvée pour cette recherche.</p>
+            </div>
+        </section>
+
+        <section class="contact-section" style="grid-column: 1 / -1; margin-top: 3rem;">
+            <div class="glass-card fade-in" style="padding: 2.5rem;">
+                <h2 style="margin-bottom: 0.5rem;">Restons en <span class="gradient-text">Contact</span></h2>
+                <p style="margin-bottom: 2rem; color: var(--text-secondary);">Une suggestion de tutoriel ou une question sur la Modern Data Stack ?</p>
+                
+                <form action="https://formspree.io/f/xjgppbvj" method="POST" style="display: grid; gap: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="input-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Qui êtes-vous ?</label>
+                            <input type="text" name="name" placeholder="Nom ou Pseudo" required 
+                                style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; color: white;">
+                        </div>
+                        <div class="input-group">
+                            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Votre Email</label>
+                            <input type="email" name="email" placeholder="email@exemple.com" required 
+                                style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; color: white;">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Message</label>
+                        <textarea name="message" rows="4" placeholder="Votre message..." required 
+                            style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; color: white; resize: none;"></textarea>
+                    </div>
+                    <button type="submit" class="primary-btn" style="justify-self: start; padding: 0.8rem 2.5rem;">
+                        Envoyer le message
+                    </button>
+                </form>
             </div>
         </section>
     </main>
