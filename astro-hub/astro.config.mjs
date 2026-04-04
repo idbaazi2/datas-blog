@@ -6,6 +6,7 @@ import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://www.datas.ma', // Domaine personnalisé
   output: 'static',
   integrations: [react(), markdoc(), keystatic()]
 });
