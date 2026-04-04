@@ -89,6 +89,32 @@
         </section>
     </main>
 
+<section class="hub-container contact-section">
+    <div class="glass-card contact-box" style="padding: 2rem; width: 100%; margin-top: 2rem;">
+        <h2 class="gradient-text" style="margin-top: 0;">Restons en contact</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Une suggestion de ressource ou une question technique ? Écrivez-moi.</p>
+        
+        <form action="https://formspree.io/f/VOTRE_ID" method="POST" class="contact-form">
+            <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Qui êtes-vous ?</label>
+                    <input type="text" name="name" placeholder="Votre nom" required style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white;">
+                </div>
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Votre Email</label>
+                    <input type="email" name="email" placeholder="nom@exemple.com" required style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white;">
+                </div>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
+                <textarea name="message" rows="4" placeholder="Votre message..." required style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; resize: none;"></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn" style="width: auto; padding: 0.8rem 2rem;">Envoyer le message</button>
+        </form>
+    </div>
+</section>
     <footer class="glass-footer compact">
         <div class="footer-content">
             <div class="footer-brand">
