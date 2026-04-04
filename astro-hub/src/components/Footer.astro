@@ -1,0 +1,33 @@
+---
+const currentPath = Astro.url.pathname;
+let footerTagline = "Votre portail central pour apprendre et maîtriser la donnée.";
+
+if (currentPath.includes("outils")) {
+    footerTagline = "Référentiel mondial des technologies de la donnée.";
+} else if (currentPath.includes("glossaire")) {
+    footerTagline = "Votre portail pour comprendre le langage de la donnée.";
+}
+---
+<footer class="glass-footer compact">
+    <div class="footer-content">
+        <div class="footer-brand">
+             <a href="/" class="brand-logo">
+                 <span class="brand-icon">📚</span>
+                 <div class="brand-text-block">
+                     <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                     <p class="brand-tagline">{footerTagline}</p>
+                 </div>
+             </a>
+        </div>
+        <div class="footer-links">
+            <div class="link-group">
+                <a href="/">Accueil</a>
+                <a href="/glossaire">Glossaire</a>
+                <a href="/outils">Outils</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; {new Date().getFullYear()} Datas.ma Hub.</p>
+    </div>
+</footer>

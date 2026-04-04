@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataTech Hub | Répertoire de Tutoriels & Références Data</title>
+    <meta name="description" content="Découvrez une sélection des meilleurs tutoriels, documentations et résumés techniques sur la Modern Data Stack, la BI et l'IA.">
+    
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Arrière-plan dynamique et flouté (Glassmorphism) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="glass-nav">
+        <a href="index.html" class="brand-logo">
+            <span class="brand-icon">📚</span>
+            <div class="brand-text-block">
+                <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                <p class="brand-tagline">Votre portail pour maîtriser la donnée.</p>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Tutoriels & Infos</a>
+            <a href="glossaire.html">Glossaire</a>
+            <a href="outils.html">Outils</a>
+        </div>
+        <div class="nav-actions">
+            <!-- Bouton minimaliste -->
+            <button class="secondary-btn">Suggérer une référence</button>
+        </div>
+    </nav>
+
+    <!-- Hub Header -->
+    <header class="hub-header glossary-header">
+        <h1>Portail de <span class="gradient-text">Tutoriels & Références</span> Data</h1>
+        <p>Une sélection structurée des meilleurs résumés techniques, documentations officielles et bonnes pratiques sur la Modern Data Stack mondiale.</p>
+        
+        <!-- Barre de Recherche [NOUVEAU] -->
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="resource-search" placeholder="Rechercher un outil, un concept ou un tutoriel...">
+            </div>
+        </div>
+    </header>
+
+    <main class="hub-container">
+        <!-- Sidebar - Filtres et Rubriques -->
+        <aside class="glass-sidebar">
+            <div class="sidebar-section">
+                <h3>Rubriques Techniques</h3>
+                <ul class="category-list">
+                    <li><a href="#" class="active" data-filter="all"><span class="icon">📁</span> Toutes les ressources</a></li>
+                    <li><a href="#" data-filter="bi"><span class="icon">📊</span> Business Intelligence</a></li>
+                    <li><a href="#" data-filter="engineering"><span class="icon">⚙️</span> Data Engineering</a></li>
+                    <li><a href="#" data-filter="cloud"><span class="icon">☁️</span> Architecture & Cloud</a></li>
+                    <li><a href="#" data-filter="ai"><span class="icon">🤖</span> IA & Machine Learning</a></li>
+                    <li><a href="#" data-filter="gouvernance"><span class="icon">🛡️</span> Gouvernance & Concepts</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Outils & Notions</h3>
+                <div class="tags-cloud">
+                    <span class="tag" data-tag="Power BI">Power BI</span>
+                    <span class="tag" data-tag="Tableau">Tableau</span>
+                    <span class="tag" data-tag="dbt">dbt</span>
+                    <span class="tag" data-tag="Snowflake">Snowflake</span>
+                    <span class="tag" data-tag="Databricks">Databricks</span>
+                    <span class="tag" data-tag="Airflow">Airflow</span>
+                    <span class="tag" data-tag="Data Quality">Data Quality</span>
+                    <span class="tag" data-tag="Data Catalog">Data Catalog</span>
+                    <span class="tag" data-tag="Reverse ETL">Reverse ETL</span>
+                    <span class="tag" data-tag="LLM">LLM</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Liste des Ressources / Tutoriels (Dynamique) -->
+        <section class="resources-list" id="resources-container">
+            <!-- Les cartes seront injectées ici par JavaScript -->
+        </section>
+    </main>
+
+    <footer class="glass-footer compact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                 <a href="index.html" class="brand-logo">
+                     <span class="brand-icon">📚</span>
+                     <div class="brand-text-block">
+                         <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                         <p class="brand-tagline">Votre portail central pour apprendre et maîtriser les outils de la Data Stack.</p>
+                     </div>
+                 </a>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <a href="#">À Propos</a>
+                    <a href="#">Contribuer une ressource</a>
+                    <a href="#">Mentions Légales</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DataTech Hub. Construit pour la communauté Data.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('resources-container');
+            const searchInput = document.getElementById('resource-search');
+            const filterLinks = document.querySelectorAll('.category-list a');
+            const tags = document.querySelectorAll('.tag');
+            
+            let allResources = [];
+            let currentFilter = 'all';
+            let currentTag = null;
+
+            // Chargement des données JSON
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    allResources = data;
+                    renderResources(allResources);
+                })
+                .catch(error => console.error('Erreur lors du chargement des données:', error));
+
+            function renderResources(resources) {
+                container.innerHTML = '';
+                resources.forEach(res => {
+                    const article = document.createElement('article');
+                    article.className = 'resource-card glass-card';
+                    article.setAttribute('data-category', res.category);
+                    
+                    article.innerHTML = `
+                        <div class="resource-header">
+                            <div class="resource-title-group">
+                                <span class="badge glow category-badge ${res.category}">${res.categoryLabel}</span>
+                                <h2>${res.title}</h2>
+                            </div>
+                        </div>
+                        <div class="resource-content">
+                            <p><strong>Résumé :</strong> ${res.summary}</p>
+                            <div class="resource-meta">
+                                <span class="meta-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 
+                                    Temps: ${res.time}
+                                </span>
+                                <span class="meta-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> 
+                                    Niveau: ${res.level}
+                                </span>
+                                <span class="meta-item source">Source: <strong>${res.source}</strong></span>
+                            </div>
+                        </div>
+                        <div class="resource-footer">
+                            <a href="${res.url}" target="_blank" rel="noopener noreferrer" class="primary-btn sm">
+                                Consulter le tutoriel source <span class="arrow">↗</span>
+                            </a>
+                        </div>
+                    `;
+                    container.appendChild(article);
+                });
+            }
+
+            function applyFilters() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                const filtered = allResources.filter(res => {
+                    const matchesSearch = res.title.toLowerCase().includes(searchTerm) || 
+                                         res.summary.toLowerCase().includes(searchTerm) ||
+                                         res.categoryLabel.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCategory = currentFilter === 'all' || res.category === currentFilter;
+                    const matchesTag = !currentTag || (res.tags && res.tags.includes(currentTag));
+
+                    return matchesSearch && matchesCategory && matchesTag;
+                });
+                
+                renderResources(filtered);
+            }
+
+            // Events
+            searchInput.addEventListener('input', applyFilters);
+
+            filterLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    currentFilter = link.getAttribute('data-filter');
+                    currentTag = null; // Reset tag filter
+                    applyFilters();
+                });
+            });
+
+            tags.forEach(tag => {
+                tag.addEventListener('click', () => {
+                    filterLinks.forEach(l => l.classList.remove('active'));
+                    currentTag = tag.getAttribute('data-tag');
+                    currentFilter = 'all'; // Reset category filter
+                    applyFilters();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import toolsData from '../../public/tools.json';
+
+// Fonction helper pour déterminer l'icône pendant la génération
+const getIcon = (category: string) => {
+    if(category.includes("Visualisation")) return "📉";
+    if(category.includes("Stockage")) return "☁️";
+    if(category.includes("Ingestion")) return "📥";
+    if(category.includes("Transformation")) return "⚙️";
+    if(category.includes("Architecture")) return "🏘️";
+    if(category.includes("Orchestration")) return "⛓️";
+    return "🛠️";
+};
+---
+
+<Layout title="Annuaire des Outils Data">
+    <header class="hub-header glossary-header">
+        <h1>Annuaire des <span class="gradient-text">Outils Data</span></h1>
+        <p>Sélectionnez les meilleures solutions pour construire et automatiser votre Modern Data Stack.</p>
+        
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="tool-search" placeholder="Rechercher par nom ou catégorie...">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="tools-container" class="tools-grid">
+            <!-- ⚡️ LA MAGIE ASTRO: On génère le vrai HTML ici, dès le départ ! -->
+            {toolsData.map((tool) => (
+                <div class="tool-card glass-card fade-in" data-name={tool.name.toLowerCase()} data-cat={tool.category.toLowerCase()} data-desc={tool.description.toLowerCase()}>
+                    <div>
+                        <div class="tool-header">
+                            <div class="tool-icon">{getIcon(tool.category)}</div>
+                            <span class="badge glow">{tool.category}</span>
+                        </div>
+                        <h3>{tool.name}</h3>
+                        <div class="tool-badges">
+                            <span class="tag">{tool.type}</span>
+                            <span class="tag">{tool.pricing}</span>
+                        </div>
+                        <p class="tool-desc">{tool.description}</p>
+                    </div>
+                    <div>
+                        <div class="tool-specs">
+                            <span>Spécificité : {tool.type}</span>
+                            <span>Coût : {tool.pricing}</span>
+                        </div>
+                        <div class="tool-footer">
+                            <a href={tool.url} target="_blank" class="primary-btn sm">Site officiel <span class="arrow">↗</span></a>
+                        </div>
+                    </div>
+                </div>
+            ))}
+            
+            <p id="no-results-msg" class="no-results" style="display: none; grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">
+                Aucun outil trouvé.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        // Ce tout petit script ne sert plus QU'À filtrer le vrai HTML déjà présent.
+        // Fini la construction lourde des éléments HTML par Javascript !
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('tool-search');
+            const toolCards = document.querySelectorAll('.tool-card');
+            const noResultsMsg = document.getElementById('no-results-msg');
+
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                let visibleCount = 0;
+
+                toolCards.forEach(card => {
+                    const name = card.getAttribute('data-name');
+                    const cat = card.getAttribute('data-cat');
+                    const desc = card.getAttribute('data-desc');
+                    
+                    if (name.includes(term) || cat.includes(term) || desc.includes(term)) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+            });
+        });
+    </script>
+
+    <style>
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 6% 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .tool-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+            height: 100%;
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-top: -0.5rem;
+        }
+        .tool-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 1rem;
+        }
+        .tool-desc {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .tool-specs {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .tool-footer {
+            margin-top: 2rem;
+            text-align: right;
+        }
+    </style>
+</Layout>

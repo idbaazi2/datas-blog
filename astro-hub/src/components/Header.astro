@@ -1,0 +1,29 @@
+---
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) => currentPath.endsWith(path) || (currentPath === '/' && path === '/index.html') ? 'active' : '';
+
+let btnText = "Suggérer un post";
+if (currentPath.includes("outils")) {
+    btnText = "Suggérer un outil";
+} else if (currentPath.includes("glossaire")) {
+    btnText = "Suggérer un terme";
+}
+---
+<nav class="glass-nav">
+    <a href="/" class="brand-logo">
+        <span class="brand-icon">📚</span>
+        <div class="brand-text-block">
+            <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+            <p class="brand-tagline">Votre portail pour maîtriser la donnée.</p>
+        </div>
+    </a>
+    <div class="nav-links">
+        <a href="/" class={isActive('/')}>Tutoriels & Infos</a>
+        <a href="/glossaire" class={isActive('/glossaire')}>Glossaire</a>
+        <a href="/outils" class={isActive('/outils')}>Outils</a>
+    </div>
+    <div class="nav-actions">
+        <!-- Bouton contextuel -->
+        <button class={currentPath.includes("glossaire") ? "secondary-btn" : "primary-btn sm"}>{btnText}</button>
+    </div>
+</nav>

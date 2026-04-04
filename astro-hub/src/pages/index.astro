@@ -1,0 +1,195 @@
+---
+import Layout from '../layouts/Layout.astro';
+import allResources from '../../public/data.json';
+
+const getCategoryIcon = (cat: string) => {
+    if(cat === 'bi') return "📊";
+    if(cat === 'engineering') return "⚙️";
+    if(cat === 'cloud') return "☁️";
+    if(cat === 'ai') return "🤖";
+    return "📁";
+};
+---
+
+<Layout title="Tutoriels & Références Data" description="Trouvez les meilleurs cas d'usage, tutoriels et articles techniques sur la Modern Data Stack (Snowflake, dbt, etc).">
+    
+    <header class="hub-header glossary-header">
+        <h1>Portail de <span class="gradient-text">Tutoriels & Références Data</span></h1>
+        <p>Explorez notre base de connaissances sur la Modern Data Stack, le Data Engineering, et la BI.</p>
+        
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="resource-search" placeholder="Rechercher un outil, un concept ou un tutoriel...">
+            </div>
+        </div>
+    </header>
+
+    <main class="hub-container">
+        <!-- Sidebar - Filtres et Rubriques -->
+        <aside class="glass-sidebar">
+            <div class="sidebar-section">
+                <h3>Rubriques Techniques</h3>
+                <ul class="category-list">
+                    <li><a href="#" class="active filter-btn" data-filter="all"><span class="icon">📁</span> Toutes les ressources</a></li>
+                    <li><a href="#" class="filter-btn" data-filter="bi"><span class="icon">📊</span> Business Intelligence</a></li>
+                    <li><a href="#" class="filter-btn" data-filter="engineering"><span class="icon">⚙️</span> Data Engineering</a></li>
+                    <li><a href="#" class="filter-btn" data-filter="cloud"><span class="icon">☁️</span> Architecture & Cloud</a></li>
+                    <li><a href="#" class="filter-btn" data-filter="ai"><span class="icon">🤖</span> IA & Machine Learning</a></li>
+                    <li><a href="#" class="filter-btn" data-filter="gouvernance"><span class="icon">🛡️</span> Gouvernance & Concepts</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Outils & Notions</h3>
+                <div class="tags-cloud">
+                    <span class="tag" data-tag="Power BI">Power BI</span>
+                    <span class="tag" data-tag="Tableau">Tableau</span>
+                    <span class="tag" data-tag="dbt">dbt</span>
+                    <span class="tag" data-tag="Snowflake">Snowflake</span>
+                    <span class="tag" data-tag="Databricks">Databricks</span>
+                    <span class="tag" data-tag="Airflow">Airflow</span>
+                    <span class="tag" data-tag="Data Quality">Data Quality</span>
+                    <span class="tag" data-tag="Data Catalog">Data Catalog</span>
+                    <span class="tag" data-tag="Reverse ETL">Reverse ETL</span>
+                    <span class="tag" data-tag="LLM">LLM</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Liste des Ressources HTML en SSG -->
+        <section class="resources-list" id="resources-container">
+            {allResources.map((res) => (
+                <article 
+                    class="resource-card glass-card fade-in"
+                    data-title={res.title.toLowerCase()}
+                    data-summary={res.summary.toLowerCase()}
+                    data-cat={res.category}
+                    data-catlabel={res.categoryLabel.toLowerCase()}
+                    data-tags={JSON.stringify(res.tags)}
+                >
+                    <div class="resource-header">
+                        <span class={`category-badge ${res.category}`}>{getCategoryIcon(res.category)} {res.categoryLabel}</span>
+                        <h2>{res.title}</h2>
+                    </div>
+                    <div class="resource-body">
+                        <p>{res.summary}</p>
+                        <div class="resource-tags">
+                            {res.tags.map(t => <span class={`badge ${res.category}`}>{t}</span>)}
+                        </div>
+                        <div class="resource-meta">
+                            <span class="meta-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                {res.date}
+                            </span>
+                            <span class="meta-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 
+                                Temps: {res.time}
+                            </span>
+                            <span class="meta-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> 
+                                Niveau: {res.level}
+                            </span>
+                            <span class="meta-item source">Source: <strong>{res.source}</strong></span>
+                        </div>
+                    </div>
+                    <div class="resource-footer">
+                        <a href={res.url} target="_blank" rel="noopener noreferrer" class="primary-btn sm">
+                            Consulter le tutoriel source <span class="arrow">↗</span>
+                        </a>
+                    </div>
+                </article>
+            ))}
+            
+            <div id="no-results-msg" class="glass-card fade-in" style="display: none; grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">
+                <p>Aucune ressource trouvée pour cette recherche.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('resource-search');
+            const filterLinks = document.querySelectorAll('.filter-btn');
+            const tagButtons = document.querySelectorAll('.tag');
+            const cards = document.querySelectorAll('.resource-card');
+            const noResultsMsg = document.getElementById('no-results-msg');
+            
+            let currentFilter = 'all';
+            let currentTag = null;
+
+            function applyFilters() {
+                const searchTerm = searchInput.value.toLowerCase();
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const title = card.getAttribute('data-title');
+                    const summary = card.getAttribute('data-summary');
+                    const catLabel = card.getAttribute('data-catlabel');
+                    const cat = card.getAttribute('data-cat');
+                    const tagsStr = card.getAttribute('data-tags');
+                    
+                    const matchSearch = title.includes(searchTerm) || summary.includes(searchTerm) || catLabel.includes(searchTerm);
+                    const matchCategory = currentFilter === 'all' || cat === currentFilter;
+                    const matchTag = !currentTag || tagsStr.includes(`"${currentTag}"`);
+
+                    if (matchSearch && matchCategory && matchTag) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+            }
+
+            searchInput.addEventListener('input', applyFilters);
+
+            filterLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    currentFilter = link.getAttribute('data-filter');
+                    currentTag = null;
+
+                    // Remove tag active styling
+                    tagButtons.forEach(b => {
+                        b.classList.remove('active-tag', 'filter-active');
+                        b.style.borderColor = 'var(--glass-border)';
+                        b.style.color = 'var(--text-secondary)';
+                    });
+
+                    applyFilters();
+                });
+            });
+
+            tagButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tag = btn.getAttribute('data-tag');
+                    
+                    tagButtons.forEach(b => {
+                        b.classList.remove('active-tag');
+                        b.style.borderColor = 'var(--glass-border)';
+                        b.style.color = 'var(--text-secondary)';
+                    });
+
+                    if (currentTag === tag) {
+                        currentTag = null;
+                    } else {
+                        currentTag = tag;
+                        btn.classList.add('active-tag');
+                        btn.style.borderColor = 'var(--accent-1)';
+                        btn.style.color = 'var(--text-primary)';
+                        
+                        filterLinks.forEach(l => l.classList.remove('active'));
+                        filterLinks[0].classList.add('active');
+                        currentFilter = 'all';
+                    }
+                    applyFilters();
+                });
+            });
+        });
+    </script>
+</Layout>

@@ -1,0 +1,66 @@
+[
+    {
+        "name": "Power BI",
+        "category": "Visualisation",
+        "type": "SaaS / Desktop",
+        "pricing": "Freemium",
+        "description": "L'outil leader de Microsoft pour le reporting interactif et l'analyse de données d'entreprise.",
+        "url": "https://powerbi.microsoft.com/"
+    },
+    {
+        "name": "Snowflake",
+        "category": "Stockage (Cloud)",
+        "type": "SaaS",
+        "pricing": "Pay-as-you-go",
+        "description": "Une plateforme de données cloud native offrant une performance exceptionnelle et une scalabilité infinie.",
+        "url": "https://www.snowflake.com/"
+    },
+    {
+        "name": "dbt (data build tool)",
+        "category": "Transformation",
+        "type": "Open Source / SaaS",
+        "pricing": "Gratuit / Premium",
+        "description": "Le standard pour transformer les données dans le warehouse en utilisant SQL et des pratiques d'ingénierie logicielle.",
+        "url": "https://www.getdbt.com/"
+    },
+    {
+        "name": "Apache Airflow",
+        "category": "Orchestration",
+        "type": "Open Source",
+        "pricing": "Gratuit (Self-hosted)",
+        "description": "La plateforme de référence pour programmer et surveiller des workflows complexes de données via Python.",
+        "url": "https://airflow.apache.org/"
+    },
+    {
+        "name": "Fivetran",
+        "category": "Ingestion",
+        "type": "SaaS",
+        "pricing": "Volume-based",
+        "description": "Des connecteurs de données automatisés et fiables pour centraliser toutes vos sources dans votre warehouse.",
+        "url": "https://fivetran.com/"
+    },
+    {
+        "name": "Tableau",
+        "category": "Visualisation",
+        "type": "SaaS / Desktop",
+        "pricing": "Licence Utilisateur",
+        "description": "Historiquement réputé pour sa puissance d'analyse visuelle et sa flexibilité de design graphique.",
+        "url": "https://www.tableau.com/"
+    },
+    {
+        "name": "Databricks",
+        "category": "Architecture (Lakehouse)",
+        "type": "SaaS",
+        "pricing": "Pay-as-you-go",
+        "description": "Pionnier du Lakehouse, combinant le meilleur des Data Lakes et des Data Warehouses avec Spark.",
+        "url": "https://databricks.com/"
+    },
+    {
+        "name": "Airbyte",
+        "category": "Ingestion",
+        "type": "Open Source / SaaS",
+        "pricing": "Gratuit / Premium",
+        "description": "L'alternative open-source pour l'intégration de données avec de très nombreux connecteurs communautaires.",
+        "url": "https://airbyte.com/"
+    }
+]

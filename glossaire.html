@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossaire Data | DataTech Hub</title>
+    <meta name="description"
+        content="Lexique et définitions des termes essentiels de la Modern Data Stack, de la BI et de l'IA.">
+
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <!-- Arrière-plan dynamique -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="glass-nav">
+        <a href="index.html" class="brand-logo">
+            <span class="brand-icon">📚</span>
+            <div class="brand-text-block">
+                <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                <p class="brand-tagline">Votre portail pour maîtriser la donnée.</p>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Tutoriels & Infos</a>
+            <a href="glossaire.html" class="active">Glossaire</a>
+            <a href="outils.html">Outils</a>
+        </div>
+        <div class="nav-actions">
+            <button class="secondary-btn">Suggérer un terme</button>
+        </div>
+    </nav>
+
+    <header class="hub-header glossary-header">
+        <h1>Glossaire <span class="gradient-text">Data / BI / IA</span></h1>
+        <p>Les définitions essentielles pour naviguer sereinement dans l'écosystème de la donnée moderne.</p>
+
+        <!-- Barre de Recherche -->
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="glossary-search" placeholder="Rechercher une définition (ex: Lakehouse, dbt...)">
+            </div>
+        </div>
+
+        <!-- Filtres par catégories -->
+        <div class="tags-cloud glossary-categories" id="category-filters"
+            style="justify-content: center; margin-top: 1.5rem;">
+            <!-- Injecté par JS -->
+        </div>
+
+        <!-- Navigation par lettres -->
+        <div class="alphabet-nav" id="alphabet-nav">
+            <!-- Injecté par JS -->
+        </div>
+    </header>
+
+    <main class="glossary-main">
+        <section id="glossary-container" class="glossary-grid">
+            <!-- Injecté par JS -->
+        </section>
+    </main>
+
+    <footer class="glass-footer compact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="brand-logo">
+                    <span class="brand-icon">📚</span>
+                    <div class="brand-text-block">
+                        <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                        <p class="brand-tagline">Votre portail central pour apprendre et maîtriser la donnée.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <a href="index.html">Accueil</a>
+                    <a href="#">À Propos</a>
+                    <a href="#">Mentions Légales</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DataTech Hub. </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('glossary-container');
+            const searchInput = document.getElementById('glossary-search');
+            const alphabetNav = document.getElementById('alphabet-nav');
+            const categoryFilters = document.getElementById('category-filters');
+
+            let glossaryData = [];
+            let currentSearch = '';
+            let currentLetter = 'all';
+            let currentCategory = 'all';
+
+            // Charger les données
+            fetch('glossary.json')
+                .then(response => response.json())
+                .then(data => {
+                    glossaryData = data.sort((a, b) => a.term.localeCompare(b.term));
+                    renderCategories();
+                    renderAlphabet();
+                    applyFilters();
+                });
+
+            function renderCategories() {
+                const categories = ['all', ...new Set(glossaryData.map(t => t.category))].sort();
+                categoryFilters.innerHTML = '';
+
+                categories.forEach(cat => {
+                    const btn = document.createElement('span');
+                    btn.className = `tag ${cat === 'all' ? 'active filter-active' : ''}`;
+                    if (cat !== 'all') {
+                        // Pour les autres boutons on s'assure qu'ils ont le bon style si on clique dessus
+                        btn.style.cursor = 'pointer';
+                    }
+                    btn.textContent = cat === 'all' ? 'Toutes les catégories' : cat;
+                    btn.setAttribute('data-category', cat);
+
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('#category-filters .tag').forEach(b => {
+                            b.classList.remove('active', 'filter-active');
+                            b.style.borderColor = 'var(--glass-border)';
+                            b.style.color = 'var(--text-secondary)';
+                        });
+                        btn.classList.add('active', 'filter-active');
+                        // Ajout d'un style inline pour forcer l'état actif sur les tags (puisque .tag dans index.css est assez générique)
+                        btn.style.borderColor = 'var(--accent-1)';
+                        btn.style.color = 'var(--text-primary)';
+
+                        currentCategory = cat;
+                        applyFilters();
+                    });
+
+                    if (cat === 'all') {
+                        btn.style.borderColor = 'var(--accent-1)';
+                        btn.style.color = 'var(--text-primary)';
+                    }
+                    categoryFilters.appendChild(btn);
+                });
+            }
+
+            function renderAlphabet() {
+                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+                alphabetNav.innerHTML = `<button class="letter-btn active" data-letter="all">Tous</button>`;
+                letters.forEach(l => {
+                    // On ne grise plus les lettres ici, ou alors on vérifie si la lettre existe dans les données GLOBALES
+                    const hasTerms = glossaryData.some(t => t.term.toUpperCase().startsWith(l));
+                    const btn = document.createElement('button');
+                    btn.className = `letter-btn ${hasTerms ? '' : 'disabled'}`;
+                    btn.textContent = l;
+                    btn.setAttribute('data-letter', l.toLowerCase());
+                    if (!hasTerms) btn.disabled = true;
+                    alphabetNav.appendChild(btn);
+                });
+
+                document.querySelectorAll('.letter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentLetter = btn.getAttribute('data-letter');
+                        applyFilters();
+                    });
+                });
+            }
+
+            function applyFilters() {
+                let filtered = glossaryData;
+
+                // 1. Filtrer par recherche
+                if (currentSearch) {
+                    filtered = filtered.filter(t =>
+                        t.term.toLowerCase().includes(currentSearch) ||
+                        t.definition.toLowerCase().includes(currentSearch) ||
+                        t.category.toLowerCase().includes(currentSearch)
+                    );
+                }
+
+                // 2. Filtrer par lettre
+                if (currentLetter !== 'all') {
+                    filtered = filtered.filter(t => t.term.toLowerCase().startsWith(currentLetter));
+                }
+
+                // 3. Filtrer par catégorie
+                if (currentCategory !== 'all') {
+                    filtered = filtered.filter(t => t.category === currentCategory);
+                }
+
+                renderGlossary(filtered);
+            }
+
+            function renderGlossary(terms) {
+                container.innerHTML = '';
+                if (terms.length === 0) {
+                    container.innerHTML = '<p class="no-results">Aucun terme trouvé correspondant à vos critères.</p>';
+                    return;
+                }
+                terms.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'glossary-card glass-card';
+                    card.innerHTML = `
+                        <div class="card-tag">${item.category}</div>
+                        <h3>${item.term}</h3>
+                        <p>${item.definition}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                applyFilters();
+            });
+        });
+    </script>
+</body>
+
+</html>

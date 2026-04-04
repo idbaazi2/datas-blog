@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import glossaryData from '../../public/glossary.json';
+
+// Préparer les données
+const sortedGlossary = [...glossaryData].sort((a, b) => a.term.localeCompare(b.term));
+const categories = ['all', ...new Set(sortedGlossary.map(t => t.category))].sort();
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// Helper
+const hasTerms = (letter: string) => sortedGlossary.some(t => t.term.toUpperCase().startsWith(letter));
+---
+
+<Layout title="Glossaire Data / BI / IA" description="Dictionnaire Français et définitions de la Data, BI et IA : Lakehouse, dbt, Reverse ETL, Snowflake, etc.">
+    <header class="hub-header glossary-header">
+        <h1>Glossaire <span class="gradient-text">Data / BI / IA</span></h1>
+        <p>Les définitions essentielles pour naviguer sereinement dans l'écosystème de la donnée moderne.</p>
+
+        <!-- Barre de Recherche -->
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="glossary-search" placeholder="Rechercher une définition (ex: Lakehouse, dbt...)">
+            </div>
+        </div>
+
+        <!-- Filtres par catégories statiques -->
+        <div class="tags-cloud glossary-categories" id="category-filters"
+            style="justify-content: center; margin-top: 1.5rem;">
+            {categories.map((cat) => (
+                <span 
+                    class={`tag ${cat === 'all' ? 'active filter-active' : ''}`}
+                    data-category={cat}
+                    style={cat === 'all' ? 'border-color: var(--accent-1); color: var(--text-primary); cursor: pointer;' : 'cursor: pointer;'}
+                >
+                    {cat === 'all' ? 'Toutes les catégories' : cat}
+                </span>
+            ))}
+        </div>
+
+        <!-- Navigation par lettres statique -->
+        <div class="alphabet-nav" id="alphabet-nav">
+            <button class="letter-btn active" data-letter="all">Tous</button>
+            {letters.map((l) => (
+                <button 
+                    class={`letter-btn ${!hasTerms(l) ? 'disabled' : ''}`}
+                    data-letter={l.toLowerCase()}
+                    disabled={!hasTerms(l)}
+                >
+                    {l}
+                </button>
+            ))}
+        </div>
+    </header>
+
+    <main class="glossary-main">
+        <section id="glossary-container" class="glossary-grid">
+            <!-- Boucle SSG HTML pur Astro -->
+            {sortedGlossary.map((item) => (
+                <div 
+                    class="glossary-card glass-card fade-in"
+                    data-term={item.term.toLowerCase()} 
+                    data-cat={item.category} 
+                    data-desc={item.definition.toLowerCase()}
+                    data-letter={item.term.charAt(0).toLowerCase()}
+                >
+                    <div class="card-tag">{item.category}</div>
+                    <h3>{item.term}</h3>
+                    <p>{item.definition}</p>
+                </div>
+            ))}
+            <p id="no-results-msg" class="no-results" style="display: none; grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">
+                Aucun terme trouvé correspondant à vos critères.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('glossary-search');
+            const catBtns = document.querySelectorAll('#category-filters .tag');
+            const letterBtns = document.querySelectorAll('.letter-btn');
+            const cards = document.querySelectorAll('.glossary-card');
+            const noResultsMsg = document.getElementById('no-results-msg');
+
+            let currentSearch = '';
+            let currentCategory = 'all';
+            let currentLetter = 'all';
+
+            function applyFilters() {
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const term = card.getAttribute('data-term');
+                    const cat = card.getAttribute('data-cat');
+                    const desc = card.getAttribute('data-desc');
+                    const letter = card.getAttribute('data-letter');
+
+                    const matchSearch = term.includes(currentSearch) || desc.includes(currentSearch) || cat.toLowerCase().includes(currentSearch);
+                    const matchCat = currentCategory === 'all' || cat === currentCategory;
+                    const matchLetter = currentLetter === 'all' || letter === currentLetter;
+
+                    if (matchSearch && matchCat && matchLetter) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                applyFilters();
+            });
+
+            catBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    catBtns.forEach(b => {
+                        b.classList.remove('active', 'filter-active');
+                        b.style.borderColor = 'var(--glass-border)';
+                        b.style.color = 'var(--text-secondary)';
+                    });
+                    
+                    btn.classList.add('active', 'filter-active');
+                    btn.style.borderColor = 'var(--accent-1)';
+                    btn.style.color = 'var(--text-primary)';
+                    
+                    currentCategory = btn.getAttribute('data-category');
+                    applyFilters();
+                });
+            });
+
+            letterBtns.forEach(btn => {
+                if (btn.classList.contains('disabled')) return;
+                btn.addEventListener('click', () => {
+                    letterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    currentLetter = btn.getAttribute('data-letter');
+                    applyFilters();
+                });
+            });
+        });
+    </script>
+</Layout>

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "category": "bi",
+    "categoryLabel": "Power BI",
+    "title": "Guide de modélisation en étoile (Star Schema)",
+    "summary": "Comprendre comment concevoir un modèle de données optimal dans Power BI. Ce tutoriel explique les avantages de la modélisation en étoile par rapport aux tables uniques (flat tables), l'impact sur les performances DAX, et comment gérer les dimensions à évolution lente (SCD).",
+    "time": "15 min",
+    "level": "Intermédiaire",
+    "source": "Documentation Microsoft",
+    "url": "https://learn.microsoft.com/fr-fr/power-bi/guidance/star-schema",
+    "tags": ["Power BI", "SQL"]
+  },
+  {
+    "id": 2,
+    "category": "engineering",
+    "categoryLabel": "dbt Labs",
+    "title": "Bonnes pratiques de test et validation de données avec dbt",
+    "summary": "Une immersion dans la qualité des données (Data Quality) via dbt. Découvrez comment implémenter des tests génériques (unicité, non nullité) et des tests singuliers personnalisés. L'article couvre également l'intégration continue (CI) pour bloquer les données corrompues avant leur arrivée en production.",
+    "time": "20 min",
+    "level": "Avancé",
+    "source": "Blog dbt Labs",
+    "url": "https://docs.getdbt.com/docs/build/tests",
+    "tags": ["dbt", "Airflow", "SQL"]
+  },
+  {
+    "id": 3,
+    "category": "cloud",
+    "categoryLabel": "Databricks",
+    "title": "Architecture Medallion : Organiser son Data Lakehouse",
+    "summary": "L'architecture Medallion désigne un modèle de conception logique utilisé pour organiser logiquement les données dans un Lakehouse (Bronze, Silver, Gold). Ce résumé présente comment passer des données brutes (Bronze) à des données nettoyées et filtrées (Silver), puis à des données agrégées prêtes pour la BI (Gold).",
+    "time": "10 min",
+    "level": "Débutant",
+    "source": "Glossaire Databricks",
+    "url": "https://www.databricks.com/fr/glossary/medallion-architecture",
+    "tags": ["Databricks", "Snowflake"]
+  },
+  {
+    "id": 4,
+    "category": "ai",
+    "categoryLabel": "Machine Learning",
+    "title": "Introduction à RAG (Retrieval-Augmented Generation)",
+    "summary": "L'approche RAG permet d'améliorer les réponses d'un grand modèle de langage (LLM) en le connectant à une base de connaissances externe (comme la documentation de votre entreprise). Ce guide explique le fonctionnement des bases vectorielles et de l'intégration des données propriétaires avec l'IA.",
+    "time": "12 min",
+    "level": "Intermédiaire",
+    "source": "Nvidia Blog Technique",
+    "url": "https://developer.nvidia.com/blog/introduction-to-retrieval-augmented-generation/",
+    "tags": ["Machine Learning", "Python"]
+  }
+]

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annuaire des Outils Data | DataTech Hub</title>
+    <meta name="description" content="Découvrez une sélection des meilleurs outils de la Modern Data Stack : Visualisation, Ingestion, Warehousing et Orchestration.">
+    
+    <!-- Polices Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 6% 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .tool-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+            height: 100%;
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-top: -0.5rem;
+        }
+        .tool-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 1rem;
+        }
+        .tool-desc {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .tool-specs {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .tool-footer {
+            margin-top: 2rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- Arrière-plan dynamique -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="glass-nav">
+        <a href="index.html" class="brand-logo">
+            <span class="brand-icon">📊</span>
+            <div class="brand-text-block">
+                <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                <p class="brand-tagline">Votre portail pour maîtriser la donnée.</p>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Tutoriels & Infos</a>
+            <a href="glossaire.html">Glossaire</a>
+            <a href="outils.html" class="active">Outils</a>
+        </div>
+        <div class="nav-actions">
+            <button class="primary-btn sm">Suggérer un outil</button>
+        </div>
+    </nav>
+
+    <header class="hub-header glossary-header">
+        <h1>Annuaire des <span class="gradient-text">Outils Data</span></h1>
+        <p>Sélectionnez les meilleures solutions pour construire et automatiser votre Modern Data Stack.</p>
+        
+        <div class="search-container">
+            <div class="search-box glass-card">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="tool-search" placeholder="Rechercher par nom ou catégorie...">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="tools-container" class="tools-grid">
+            <!-- Les fiches outils seront injectées ici par JS -->
+        </section>
+    </main>
+
+    <footer class="glass-footer compact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                 <a href="index.html" class="brand-logo">
+                     <span class="brand-icon">📊</span>
+                     <div class="brand-text-block">
+                         <h1 class="brand-title">Datas<span class="highlight">.ma</span></h1>
+                         <p class="brand-tagline">Référentiel mondial des technologies de la donnée.</p>
+                     </div>
+                 </a>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <a href="index.html">Accueil</a>
+                    <a href="glossaire.html">Glossaire</a>
+                    <a href="outils.html">Outils</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DataTech Hub.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('tools-container');
+            const searchInput = document.getElementById('tool-search');
+            let toolsData = [];
+
+            // Charger les données des outils
+            fetch('tools.json')
+                .then(response => response.json())
+                .then(data => {
+                    toolsData = data;
+                    renderTools(toolsData);
+                });
+
+            function renderTools(tools) {
+                container.innerHTML = '';
+                tools.forEach(tool => {
+                    const card = document.createElement('div');
+                    card.className = 'tool-card glass-card';
+                    
+                    // Icône générique basée sur la catégorie
+                    let icon = "🛠️";
+                    if(tool.category.includes("Visualisation")) icon = "📉";
+                    if(tool.category.includes("Stockage")) icon = "☁️";
+                    if(tool.category.includes("Ingestion")) icon = "📥";
+                    if(tool.category.includes("Transformation")) icon = "⚙️";
+                    if(tool.category.includes("Architecture")) icon = "🏘️";
+                    if(tool.category.includes("Orchestration")) icon = "⛓️";
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="tool-header">
+                                <div class="tool-icon">${icon}</div>
+                                <span class="badge glow">${tool.category}</span>
+                            </div>
+                            <h3>${tool.name}</h3>
+                            <div class="tool-badges">
+                                <span class="tag">${tool.type}</span>
+                                <span class="tag">${tool.pricing}</span>
+                            </div>
+                            <p class="tool-desc">${tool.description}</p>
+                        </div>
+                        <div>
+                            <div class="tool-specs">
+                                <span>Spécificité : ${tool.type}</span>
+                                <span>Coût : ${tool.pricing}</span>
+                            </div>
+                            <div class="tool-footer">
+                                <a href="${tool.url}" target="_blank" class="primary-btn sm">Site officiel <span class="arrow">↗</span></a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = toolsData.filter(t => 
+                    t.name.toLowerCase().includes(term) || 
+                    t.category.toLowerCase().includes(term) ||
+                    t.description.toLowerCase().includes(term)
+                );
+                renderTools(filtered);
+            });
+        });
+    </script>
+</body>
+</html>
