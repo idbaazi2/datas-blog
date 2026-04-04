@@ -662,3 +662,14 @@ button, .primary-btn {
     .brand-title { font-size: 1.35rem; }
     .brand-tagline { font-size: 0.75rem; text-align: center; }
 }
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr !important; /* Passe le nom et l'email l'un sous l'autre sur mobile */
+    }
+    
+    .contact-box {
+        margin: 1rem;
+        padding: 1.5rem !important;
+    }
+}
